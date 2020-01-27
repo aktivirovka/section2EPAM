@@ -1,4 +1,17 @@
 import java.util.*;
+/*В университете есть несколько факультетов, в которых учатся студенты, объединенные в группы. У каждого студента есть несколько учебных предметов по которым он получает оценки. Необходимо реализовать иерархию студентов, групп и факультетов.
+
+        Посчитать средний балл по всем предметам студента
+        Посчитать средний балл по конкретному предмету в конкретной группе и на конкретном факультете
+        Посчитать средний балл по предмету для всего университета
+        Релизовать следующие исключения:
+
+        Оценка ниже 0 или выше 10
+        Отсутсвие предметов у студента (должен быть хотя бы один)
+        Отсутствие студентов в группе
+        Отсутствие групп на факультете
+        Отсутствие факультетов в университете*/
+
 
 public class Runner {
 
@@ -51,9 +64,9 @@ public class Runner {
         volkov.addMarksForSubject(Subjects.PHILOSOPHY, new ArrayList<>(Arrays.asList(9, 5)));
         try {
             Group gr_h1 = university.getFaculty("Historical").getGroup("GR_H1");
-            gr_h1.addStudent(ivanov);
+          /*  gr_h1.addStudent(ivanov);
             gr_h1.addStudent(ghost);
-            gr_h1.addStudent(sidorov);
+            gr_h1.addStudent(sidorov);*/
 
             Group gr_h2 = university.getFaculty("Historical").getGroup("GR_H2");
             gr_h2.addStudent(kovalev);
@@ -79,7 +92,7 @@ public class Runner {
             System.out.println("The student " + student.getSurnameAndName() + " doesn't have any marks.");
         }
 
-        Subjects subject = Subjects.PHILOSOPHY;
+        Subjects subject = Subjects.MATH;
         try {
             double averageScoreInSubjectForUniversity = university.calculateAverageScore(subject);
             System.out.printf("Average score in subject " + subject + " for university %.2f %n", averageScoreInSubjectForUniversity);

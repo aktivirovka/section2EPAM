@@ -12,7 +12,7 @@ public class Student implements AverageScore {
         this.surnameAndName = surnameAndName;
     }
 
-    int validityOfMarks(int number) throws ValidityOfMarkExeption {
+    private int validityOfMarks(int number) throws ValidityOfMarkExeption {
         if (number < 0 || number > 10) {
             throw new ValidityOfMarkExeption();
         }

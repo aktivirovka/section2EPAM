@@ -1,0 +1,27 @@
+public final class FileData {
+    public static final FileData instance = new FileData();
+    public int productCount=0;
+    public String way="src/by/etc/resource/information";
+
+    public void increaseProductCount() {
+        productCount++;
+    }
+
+    public void decreaseProductCount() {
+        productCount--;
+    }
+
+    public int getProductCount() throws DAOException {
+        productCount=0;
+        String []split=getData().split("\n");
+        return productCount;
+    }
+    }
+
+
+
+
+Иванов 2 5 4 6
+Петров 9 8 7
+Сидоров 2 3 4
+Диодоров 7 8 7 8
