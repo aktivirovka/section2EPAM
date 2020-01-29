@@ -1,4 +1,5 @@
 import java.io.*;
+
 /*Реализовать программу которая будет получать в качестве аргумента командной строки путь к директории,
 например "D:/movies". Записать в текстовый файл структуру папок и файлов в виде, похожем на выполнение программы tree /F.
 Если в качестве параметра в программу передается не путь к директории, а путь к txt файлу по образцу выше
@@ -8,6 +9,7 @@ import java.io.*;
 Среднее количество файлов в папке
 Среднюю длинну названия файла*/
 public class MainTask {
+
     public static void main(String[] args) {
         String pathToDirectoryOrFile = args[0];
         File givenFile = new File(pathToDirectoryOrFile);
@@ -21,7 +23,7 @@ public class MainTask {
             WriterClass writer = new WriterClass();
             try {
                 File file = new File("MainTaskFile.txt");
-                writer.recordOfDirectoryContents(givenFile, file);
+                writer.recordOfDirectoryContents(givenFile, file, pathToDirectoryOrFile);
                 writer.close();
             } catch (IOException e) {
                 e.printStackTrace();

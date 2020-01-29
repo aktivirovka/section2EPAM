@@ -5,37 +5,33 @@ import java.util.List;
 
 //Создать и заполнить файл случайными целыми числами. Отсортировать содержимое файла по возрастанию.
 public class OptionalTask_1 {
-    static int newLineCharacter = 10;
-    static int endOfLine = -1;
-
     public static void main(String[] args) {
+        File file = new File("FirstFile.txt_1");
+        file.delete();//не надо удалять данные из файла каждый раз
 
-       File file = new File("FirstFile.txt_1");
-       file.delete();//не надо удалять данные из файла каждый раз
-
-        List<Integer> listOfNumbers = new ArrayList<>();
+        List<String> listOfNumbers = new ArrayList<>();
         for (int i = 0; i < 10; i++) {
             int number = (int) (Math.random() * 10);
-            listOfNumbers.add(number);
+            String str = Integer.toString(number);
+            listOfNumbers.add(str);
         }
         writeNumbers(listOfNumbers, file);
-        List<Integer> listOfReadNumbers = readNumbers(file);
-        System.out.println("\nSorting");
-        Collections.sort(listOfReadNumbers);
-        writeNumbers(listOfReadNumbers, file);
-        readSortedNumbers(file);
+        String line = readNumbers(file, false);
+        List<String> sortedList = sorting(line);
+        writeNumbers(sortedList, file);
+        readNumbers(file, true);
 
     }
 
-    static void writeNumbers(List<Integer> numbers, File file) {
+    static void writeNumbers(List<String> numbers, File file) {
         System.out.println("Writing numbers to the file");
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(file, true))) {
-            for (Integer num : numbers) {
+            for (String num : numbers) {
                 writer.write(num);
                 System.out.print(num);
             }
-            writer.write("\n");
-            //  writer.newLine();
+            // writer.write("\n");
+            writer.newLine();
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         } catch (IOException e) {
@@ -43,45 +39,41 @@ public class OptionalTask_1 {
         }
     }
 
-    static List<Integer> readNumbers(File file) {
-        List<Integer> numbersFromFile = new ArrayList<>();
-        System.out.println("\nReading numbers from the file");
+    static String readNumbers(File file, boolean areSortedNumbers) {
+        String line = null;
         try (BufferedReader reader = new BufferedReader(new FileReader(file))) {
-            int number;
-            do {
-                number = reader.read();
-                if (number != OptionalTask_1.endOfLine && number != OptionalTask_1.newLineCharacter) {
-                    numbersFromFile.add(number);
-                    System.out.print(number);
-                }
-            } while (number != OptionalTask_1.endOfLine);
+            if (!areSortedNumbers) {
+                System.out.println("\nReading numbers from the file");
+                line = reader.readLine();
+                System.out.println(line);
+            } else {
+                System.out.println("\nReading sorted numbers from the file");
+                reader.readLine();//чтение неотсортированной строки
+                String sortedLine = reader.readLine();
+                System.out.println(sortedLine);
+            }
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         } catch (IOException e) {
             e.printStackTrace();
         }
-        return numbersFromFile;
+        return line;
     }
 
-    static void readSortedNumbers(File file) {
+    static List<String> sorting(String line) {
+        System.out.println("Sorting");
+        List<String> stringList = new ArrayList<>();
         List<Integer> sortedNumbersFromFile = new ArrayList<>();
-        System.out.println("\nReading sorted numbers from the file");
-        try (BufferedReader reader = new BufferedReader(new FileReader(file))) {
-            int number;
-            do {
-                number = reader.read();
-            } while (number != OptionalTask_1.newLineCharacter);
-            do {
-                number = reader.read();
-                if (number != OptionalTask_1.endOfLine && number != OptionalTask_1.newLineCharacter) {
-                    sortedNumbersFromFile.add(number);
-                    System.out.print(number);
-                }
-            } while (number != OptionalTask_1.endOfLine);
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
+        String[] arraySymbols = line.split("");
+        for (int i = 0; i < arraySymbols.length; i++) {
+            int symbolInInteger = Integer.parseInt(arraySymbols[i]);
+            sortedNumbersFromFile.add(symbolInInteger);
         }
+        Collections.sort(sortedNumbersFromFile);
+        for (int i = 0; i < sortedNumbersFromFile.size(); i++) {
+            stringList.add(sortedNumbersFromFile.get(i).toString());
+        }
+        return stringList;
     }
+
 }
