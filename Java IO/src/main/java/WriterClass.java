@@ -38,8 +38,6 @@ public class WriterClass {
     String symbolForFile = "└──";
 
 
-
-
     void recordOfDirectoryContents(File directory, File fileForRecord, String args0) throws IOException {
         FileWriter writer = getBufferWriter(fileForRecord); //предотвращение открытия еще потоков записи
         //Arrays.sort(directory.listFiles());
@@ -60,23 +58,25 @@ public class WriterClass {
                 fileList.add(file);
             }
         }
-        if (fileList.size() != 1) {
-            for (int i = 0; i < fileList.size() - 1; i++) {
-                int gasp = fileList.get(i).getParent().length() - args0.length();
-                String fullNameWithGasp = getLineWithGap(gasp) + symbolForDirectory + fileList.get(i).getName();
+        if (fileList.size() != 0) {
+            if (fileList.size() != 1) {
+                for (int i = 0; i < fileList.size() - 1; i++) {
+                    int gasp = fileList.get(i).getParent().length() - args0.length();
+                    String fullNameWithGasp = getLineWithGap(gasp) + symbolForDirectory + fileList.get(i).getName();
+                    writer.write(fullNameWithGasp);
+                    writer.write('\n');
+                }
+                int gasp = fileList.get(fileList.size() - 1).getParent().length() - args0.length();
+                String fullNameWithGasp = getLineWithGap(gasp) + symbolForFile + fileList.get(fileList.size() - 1).getName();
                 writer.write(fullNameWithGasp);
-                writer.write('\n');
+            } else {
+                int gasp = fileList.get(fileList.size() - 1).getParent().length() - args0.length();
+                String fullNameWithGasp = getLineWithGap(gasp) + symbolForFile + fileList.get(fileList.size() - 1).getName();
+                writer.write(fullNameWithGasp);
             }
-            int gasp = fileList.get(fileList.size() - 1).getParent().length() - args0.length();
-            String fullNameWithGasp = getLineWithGap(gasp) + symbolForFile + fileList.get(fileList.size() - 1).getName();
-            writer.write(fullNameWithGasp);
-        } else {
-            int gasp = fileList.get(fileList.size() - 1).getParent().length() - args0.length();
-            String fullNameWithGasp = getLineWithGap(gasp) + symbolForFile + fileList.get(fileList.size() - 1).getName();
-            writer.write(fullNameWithGasp);
-        }
-        writer.write('\n');
-        fileList.clear();
+            writer.write('\n');
+
+        }fileList.clear();
     }
      /* void recordOfDirectoryContents(File directory, File fileForRecord ,String prefix ) throws IOException {
         FileWriter writer = getBufferWriter(fileForRecord);//предотвращение открытия еще потоков записи
