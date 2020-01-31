@@ -15,7 +15,7 @@ public class MainTask {
         File givenFile = new File(pathToDirectoryOrFile);
 
         if (args.length != 1 || !givenFile.exists()) {
-            System.out.println("Mistake in the file or directory name");
+            System.out.println("Mistake in the file or directory name or you have gasp in file name");
             return;
         }
 
@@ -23,7 +23,7 @@ public class MainTask {
             WriterClass writer = new WriterClass();
             try {
                 File file = new File("MainTaskFile.txt");
-                writer.recordOfDirectoryContents(givenFile, file, pathToDirectoryOrFile);
+                writer.recordOfDirectoryContents(givenFile,file,pathToDirectoryOrFile);
                 writer.close();
             } catch (IOException e) {
                 e.printStackTrace();
