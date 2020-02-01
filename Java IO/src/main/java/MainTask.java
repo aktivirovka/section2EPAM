@@ -11,8 +11,7 @@ import java.io.*;
 public class MainTask {
 
     public static void main(String[] args) {
-        String pathToDirectoryOrFile = args[0];
-        File givenFile = new File(pathToDirectoryOrFile);
+        File givenFile = new File(args[0]);
 
         if (args.length != 1 || !givenFile.exists()) {
             System.out.println("Mistake in the file or directory name or you have gasp in file name");
@@ -23,25 +22,26 @@ public class MainTask {
             WriterClass writer = new WriterClass();
             try {
                 File file = new File("MainTaskFile.txt");
-                writer.recordOfDirectoryContents(givenFile,file,pathToDirectoryOrFile);
+                writer.recordOfDirectoryContents(givenFile, file, 0);
                 writer.close();
             } catch (IOException e) {
                 e.printStackTrace();
             }
-        } else {
+        } else if (givenFile.isFile()) {
             ReaderClass reader = new ReaderClass();
             try {
-                reader.readFileLineByLine(pathToDirectoryOrFile).fillListOfSymbolsOfEveryLine();
+                reader.readFileLineByLine(args[0]).fillListOfSymbolsOfEveryLine();
             } catch (IOException e) {
                 e.printStackTrace();
                 System.exit(0);
             }
-
             System.out.println("Counter of folders is " + reader.getFolderCount());
             System.out.println("Counter of files in folders is " + reader.getFileCount());
             System.out.printf("Average counter of the files in a folder is %.2f", reader.getAverageFileCount());
             System.out.printf("\nAverage length of the file name is %.2f", reader.getAverageLengthOfFileName());
 
+        } else {
+            System.out.println("Your file is hidden");
         }
     }
 }

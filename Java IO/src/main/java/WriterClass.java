@@ -4,7 +4,6 @@ import java.util.Arrays;
 import java.util.List;
 
 public class WriterClass {
-    String forAll = "|";
     private FileWriter savedWriter = null;
 
     public void close() throws IOException {
@@ -20,65 +19,57 @@ public class WriterClass {
         return savedWriter;
     }
 
-
-    String getLineWithGap(int count) {
-        if (count == 0) {
-            return "";
-        }
+    String writeLine(int countDirectory) {
         StringBuilder line = new StringBuilder();
-        line.append("|");
-        for (int i = 0; i < count; i++) {
-            line.append(" ");
-        }
-
+        for (int i = 0; i < countDirectory; i++)
+            line.append("|     ");
         return line.toString();
     }
 
-    String symbolForDirectory = "|——";
-    String symbolForFile = "└──";
 
-
-    void recordOfDirectoryContents(File directory, File fileForRecord, String args0) throws IOException {
+    void recordOfDirectoryContents(File directory, File fileForRecord, int countDirectory) throws IOException {
         FileWriter writer = getBufferWriter(fileForRecord); //предотвращение открытия еще потоков записи
-        //Arrays.sort(directory.listFiles());
-
+        Arrays.sort(directory.listFiles());
+        List<File> fileList = new ArrayList<>();
+        int temporaryCountDirectory = countDirectory;
         for (File file : directory.listFiles()) {//проверено в предыдущем коде
             if (file.isDirectory()) {
-                int countDash = file.getParent().length() - args0.length();
-                String fullNameWithMarks = getLineWithGap(countDash) + symbolForDirectory + file.getName();
-                writer.write(fullNameWithMarks);
+                temporaryCountDirectory++;
+                writer.write("|—*" + file.getName());
                 writer.write('\n');
-                recordOfDirectoryContents(file, fileForRecord, args0);
+                if (isDirectoryEmpty(file)) {
+                    temporaryCountDirectory--;
+                }
+                writer.write(writeLine(temporaryCountDirectory));
+                recordOfDirectoryContents(file, fileForRecord, temporaryCountDirectory);
+                if (!isDirectoryEmpty(file)) {
+                    temporaryCountDirectory--;
+                }
             }
-        }
-        List<File> fileList = new ArrayList<>();
-
-        for (File file : directory.listFiles()) {
-            if (file.isFile()) {
+            else if (file.isFile()) {
                 fileList.add(file);
             }
         }
-        if (fileList.size() != 0) {
-            if (fileList.size() != 1) {
-                for (int i = 0; i < fileList.size() - 1; i++) {
-                    int gasp = fileList.get(i).getParent().length() - args0.length();
-                    String fullNameWithGasp = getLineWithGap(gasp) + symbolForDirectory + fileList.get(i).getName();
-                    writer.write(fullNameWithGasp);
-                    writer.write('\n');
-                }
-                int gasp = fileList.get(fileList.size() - 1).getParent().length() - args0.length();
-                String fullNameWithGasp = getLineWithGap(gasp) + symbolForFile + fileList.get(fileList.size() - 1).getName();
-                writer.write(fullNameWithGasp);
-            } else {
-                int gasp = fileList.get(fileList.size() - 1).getParent().length() - args0.length();
-                String fullNameWithGasp = getLineWithGap(gasp) + symbolForFile + fileList.get(fileList.size() - 1).getName();
-                writer.write(fullNameWithGasp);
-            }
-            writer.write('\n');
 
-        }fileList.clear();
+        temporaryCountDirectory = countDirectory;
+        for (int i = 0; i < fileList.size(); i++) {
+            if (i == fileList.size() - 1) {//для последнего файла
+                writer.write("└──" + fileList.get(i).getName());
+                writer.write('\n');
+                temporaryCountDirectory--;
+            } else {
+                writer.write("|——" + fileList.get(i).getName());
+                writer.write('\n');
+            }
+            writer.write(writeLine(temporaryCountDirectory));
+        }
+        fileList.clear();
     }
-     /* void recordOfDirectoryContents(File directory, File fileForRecord ,String prefix ) throws IOException {
+
+    private boolean isDirectoryEmpty(File file) {
+        return file.listFiles().length == 0;
+    }
+   /* void recordOfDirectoryContents(File directory, File fileForRecord, String prefix) throws IOException {
         FileWriter writer = getBufferWriter(fileForRecord);//предотвращение открытия еще потоков записи
         File file;
         File[] fileList = directory.listFiles();
@@ -90,17 +81,17 @@ public class WriterClass {
                 writer.write(prefix + "└── " + file.getName());
                 writer.write('\n');
                 if (file.isDirectory()) {
-                    recordOfDirectoryContents(file, fileForRecord,prefix + "    " );
+                    recordOfDirectoryContents(file, fileForRecord, prefix + "    ");
                 }
             } else {
                 writer.write(prefix + "├── " + file.getName());
                 writer.write('\n');
                 if (file.isDirectory()) {
-                    recordOfDirectoryContents(file,  fileForRecord,prefix + "│   ");
+                    recordOfDirectoryContents(file, fileForRecord, prefix + "│   ");
                 }
             }
-        }}
-*/
+        }
+    }*/
 }
 
 
