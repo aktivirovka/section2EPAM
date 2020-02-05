@@ -30,12 +30,17 @@ public class ReaderClass {
         }
     }
 
+    List<Integer> whichLineIsFolder = new ArrayList<>();
+
     int getFolderCount() {
+        whichLineIsFolder.clear();
         int folderCount = 0;
         for (int i = 0; i < listOfEveryLineSymbols.size(); i++) {
             for (int j = 0; j < listOfEveryLineSymbols.get(i).length; j++) {
                 if (listOfEveryLineSymbols.get(i)[j] == '*') {
                     folderCount++;
+                    whichLineIsFolder.add(i);
+
                 }
             }
         }
@@ -47,15 +52,18 @@ public class ReaderClass {
     }
 
     private int getLengthOfAllSymbolsFromFileNames() {
-        int charactersOutsideFileName = 3; // номер файла(01) и пробел до названия файла;
         int lengthOfAllSymbolsFromFileNames = 0;
+
         for (int i = 0; i < listOfEveryLineSymbols.size(); i++) {
-            for (int j = 0; j < listOfEveryLineSymbols.get(i).length; ) {
-                if (listOfEveryLineSymbols.get(i)[j] == '*') {
+            if (whichLineIsFolder.contains(i)) {
+                continue;
+            }
+            for (int j = 0; j < listOfEveryLineSymbols.get(i).length; j++ ) {
+                if (listOfEveryLineSymbols.get(i)[j] == '—') {
+                    int nameIndex = j + 2;
+                    lengthOfAllSymbolsFromFileNames += listOfEveryLineSymbols.get(i).length - nameIndex;
                     break;
                 }
-                lengthOfAllSymbolsFromFileNames += listOfEveryLineSymbols.get(i).length - charactersOutsideFileName;
-                break;
             }
         }
         return lengthOfAllSymbolsFromFileNames;
@@ -74,4 +82,5 @@ public class ReaderClass {
         }
         return (double) getLengthOfAllSymbolsFromFileNames() / getFileCount();
     }
+
 }

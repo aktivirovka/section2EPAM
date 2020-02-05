@@ -45,8 +45,7 @@ public class WriterClass {
                 if (!isDirectoryEmpty(file)) {
                     temporaryCountDirectory--;
                 }
-            }
-            else if (file.isFile()) {
+            } else if (file.isFile()) {
                 fileList.add(file);
             }
         }
@@ -54,7 +53,7 @@ public class WriterClass {
         temporaryCountDirectory = countDirectory;
         for (int i = 0; i < fileList.size(); i++) {
             if (i == fileList.size() - 1) {//для последнего файла
-                writer.write("└──" + fileList.get(i).getName());
+                writer.write("└——" + fileList.get(i).getName());
                 writer.write('\n');
                 temporaryCountDirectory--;
             } else {
@@ -69,29 +68,7 @@ public class WriterClass {
     private boolean isDirectoryEmpty(File file) {
         return file.listFiles().length == 0;
     }
-   /* void recordOfDirectoryContents(File directory, File fileForRecord, String prefix) throws IOException {
-        FileWriter writer = getBufferWriter(fileForRecord);//предотвращение открытия еще потоков записи
-        File file;
-        File[] fileList = directory.listFiles();
-        Arrays.sort(fileList);
 
-        for (int index = 0; index < fileList.length; index++) {
-            file = fileList[index];
-            if (index == fileList.length - 1) {
-                writer.write(prefix + "└── " + file.getName());
-                writer.write('\n');
-                if (file.isDirectory()) {
-                    recordOfDirectoryContents(file, fileForRecord, prefix + "    ");
-                }
-            } else {
-                writer.write(prefix + "├── " + file.getName());
-                writer.write('\n');
-                if (file.isDirectory()) {
-                    recordOfDirectoryContents(file, fileForRecord, prefix + "│   ");
-                }
-            }
-        }
-    }*/
 }
 
 
