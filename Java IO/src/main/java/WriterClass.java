@@ -12,7 +12,7 @@ public class WriterClass {
         }
     }
 
-    private FileWriter getBufferWriter(File fileForRecord) throws IOException {
+    private FileWriter getWriter(File fileForRecord) throws IOException {
         if (savedWriter == null) {
             savedWriter = new FileWriter(fileForRecord);
         }
@@ -28,7 +28,7 @@ public class WriterClass {
 
 
     void recordOfDirectoryContents(File directory, File fileForRecord, int countDirectory) throws IOException {
-        FileWriter writer = getBufferWriter(fileForRecord); //предотвращение открытия еще потоков записи
+        FileWriter writer = getWriter(fileForRecord); //предотвращение открытия еще потоков записи
         Arrays.sort(directory.listFiles());
         List<File> fileList = new ArrayList<>();
         int temporaryCountDirectory = countDirectory;
