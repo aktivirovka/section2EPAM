@@ -13,24 +13,28 @@ public class RunnerThreads {
         int parkingTime = 3;
 
         Parking parking = new Parking(parkingCapacity);
+        List<Car> listCars = new ArrayList<>();
 
         for (int i = 0; i < numberOfCars; i++) {
             Car car = new Car(parking, "Car_" + i, waitForEmptySpace, parkingTime);
+            listCars.add(car);
+            car.start();
             TimeUnit.MILLISECONDS.sleep(timeBetweenCars);
         }
 
-        goFromStation(Car.listCars);
+        goFromStation(listCars);
+        System.out.println("список по стоянке");
         for (Car car:parking.getCarsVisitedParking()) {
             System.out.println(car.getName());
         }
 
     }
 
-    public static void goFromStation(List<Thread> allCars) {
-        for (Thread thread : allCars) {
+    public static void goFromStation(List<Car> allCars) {
+        for (Car car : allCars) {
             try {
-                thread.join();
-                System.out.println(thread.getName() + " покинул парковку");
+                car.join();
+                System.out.println(car.getName() + " покинул парковку");
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
