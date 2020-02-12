@@ -2,7 +2,6 @@ import java.util.concurrent.TimeUnit;
 
 public class Car extends Thread {
     private Parking parking;
-
     int waitForEmptySpace;
     int parkingTime;
 
@@ -19,17 +18,17 @@ public class Car extends Thread {
 
     @Override
     public void run() {
-        System.out.println(getName() + " приехал на стоянку");
+        System.out.println(getName() + " has come to the parking");
         try {
             if (parking.tryAccessToPark(this)) {
-                System.out.println(getName() + " стоит на стоянке");
                 TimeUnit.SECONDS.sleep(parkingTime);
                 parking.makeSpace(this);
-            }else System.out.println(getName() + " время ожидания вышло");
+            } else {
+                System.out.println(getName() + " - the waiting time IS OVER");
+                System.out.println(getName() + " has left the parking");
+            }
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-
     }
 }
-
